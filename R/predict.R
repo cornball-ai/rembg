@@ -8,9 +8,13 @@
 # session: an rembg_session. img: [h,w,3] in [0,1].
 # Returns a list of [h,w] masks in [0,1] (a list to mirror upstream's multi-mask
 # models; the salient models each return a single mask).
-.session_predict <- function(session, img, cloth_category = NULL) {
+.session_predict <- function(session, img, cloth_category = NULL,
+                             points = NULL, labels = NULL) {
     if (identical(session$spec$kind, "cloth")) {
         return(.predict_cloth(session, img, cloth_category))
+    }
+    if (identical(session$spec$kind, "sam")) {
+        return(.predict_sam(session, img, points, labels))
     }
 
     spec <- session$spec

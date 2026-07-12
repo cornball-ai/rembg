@@ -51,7 +51,9 @@
                                      "bria-rmbg-2.0.onnx", "sha256:5b486f08200f513f460da46dd701db5fbb47d79b4be4b708a19444bcd4e79958"),
                 "u2net_cloth_seg" = .model(768, .imagenet_mean, .imagenet_std, FALSE,
         "u2net_cloth_seg.onnx", "md5:2434d1f3cb744e0e49386c906e5a08bb",
-        kind = "cloth")
+        kind = "cloth"),
+                "sam" = .model(1024, .imagenet_mean, .imagenet_std, FALSE,
+                               "sam_vit_b_01ec64", "none", kind = "sam")
 )
 
 #' Available background-removal models
