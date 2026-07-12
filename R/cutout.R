@@ -15,6 +15,9 @@
     if (length(arrs) == 1L) {
         return(arrs[[1]])
     }
+    if (length(dim(arrs[[1]])) == 2L) {
+        return(do.call(rbind, arrs)) # 2D masks
+    }
     hs <- vapply(arrs, function(a) dim(a)[1], integer(1))
     w <- dim(arrs[[1]])[2]; nc <- dim(arrs[[1]])[3]
     out <- array(0, c(sum(hs), w, nc))

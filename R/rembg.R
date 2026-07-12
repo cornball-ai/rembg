@@ -26,6 +26,9 @@
 #' @param alpha_matting_erode_size Pixels by which the trimap foreground and
 #'   background regions are eroded, leaving an unknown band for matting to solve.
 #'   Default 10.
+#' @param cloth_category For the \code{"u2net_cloth_seg"} model only: which
+#'   garment(s) to segment, one or more of \code{"upper"}, \code{"lower"},
+#'   \code{"full"}. \code{NULL} (default) returns all three, stacked vertically.
 #' @param bgcolor Optional background colour to composite the cutout onto, as a
 #'   length-3 (RGB) or length-4 (RGBA) numeric vector in \code{[0,1]} or 0-255.
 #' @param out Optional output file path. If given, the result is written there as
@@ -51,15 +54,15 @@ rembg <- function(input, model = "u2net", session = NULL, only_mask = FALSE,
                   post_process_mask = FALSE, alpha_matting = FALSE,
                   alpha_matting_foreground_threshold = 240,
                   alpha_matting_background_threshold = 10,
-                  alpha_matting_erode_size = 10, bgcolor = NULL, out = NULL,
-                  output = c("array", "raw"), ...) {
+                  alpha_matting_erode_size = 10, cloth_category = NULL,
+                  bgcolor = NULL, out = NULL, output = c("array", "raw"), ...) {
     output <- match.arg(output)
     if (is.null(session)) {
         session <- new_session(model, ...)
     }
 
     img <- .read_image(input)
-    masks <- .session_predict(session, img)
+    masks <- .session_predict(session, img, cloth_category)
 
     results <- lapply(masks, function(mask) {
         if (post_process_mask) mask <- .post_process(mask)
@@ -81,7 +84,7 @@ rembg <- function(input, model = "u2net", session = NULL, only_mask = FALSE,
         .cutout(img, mask)
     })
 
-    if (length(results) > 1L && !only_mask) {
+    if (length(results) > 1L) {
         res <- .concat_v(results)
     } else {
         res <- results[[1]]
