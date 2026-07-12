@@ -1,0 +1,31 @@
+Package: rembg
+Type: Package
+Title: Remove Image Backgrounds with Pre-Trained Segmentation Models
+Version: 0.1.0
+Authors@R: c(
+    person("Troy", "Hernandez", email = "troy.hernandez@pm.me",
+           role = c("aut", "cre"),
+           comment = c(ORCID = "0009-0005-4248-604X")),
+    person("cornball.ai", role = "cph"))
+Description: Remove the background from an image using pre-trained deep
+    learning segmentation models (U-2-Net, ISNet, BiRefNet and others) run
+    through the 'ONNX' Runtime via the 'onnxr' package. Given an image, a
+    model predicts a foreground alpha matte which is composited to produce a
+    cutout with a transparent (or solid-colour) background. Models are
+    downloaded on first use and cached locally, sharing the cache with the
+    Python 'rembg' package (<https://github.com/danielgatis/rembg>), of which
+    this is an R port.
+License: MIT + file LICENSE
+URL: https://github.com/cornball-ai/rembg
+BugReports: https://github.com/cornball-ai/rembg/issues
+Imports:
+    onnxr,
+    jpeg,
+    png,
+    tools,
+    utils
+Suggests:
+    tinytest,
+    openssl
+Encoding: UTF-8
+RoxygenNote: 7.3.2

@@ -1,0 +1,18 @@
+# tinyrox says don't edit this manually, but it can't stop you!
+
+export(model_home)
+export(new_session)
+export(rembg)
+export(rembg_models)
+
+S3method(print,rembg_session)
+
+importFrom(jpeg,readJPEG)
+importFrom(jpeg,writeJPEG)
+importFrom(onnxr,onnx_is_installed)
+importFrom(onnxr,onnx_model)
+importFrom(onnxr,onnx_run)
+importFrom(png,readPNG)
+importFrom(png,writePNG)
+importFrom(tools,md5sum)
+importFrom(utils,download.file)
