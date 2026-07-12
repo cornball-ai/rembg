@@ -38,6 +38,9 @@ rembg("b.jpg", session = sess, out = "b.png")
 # just the mask, or a solid background
 mask  <- rembg("photo.jpg", only_mask = TRUE)
 white <- rembg("photo.jpg", bgcolor = c(255, 255, 255, 255))
+
+# soft hair/fur edges via alpha matting (slower)
+soft  <- rembg("photo.jpg", alpha_matting = TRUE)
 ```
 
 `input` accepts a file path, a raw vector of PNG/JPEG bytes, or a numeric
@@ -67,8 +70,10 @@ the Python `rembg` uses, so the two share downloads.
   difference shows only at soft edges (hair, fur).
 - JPEG EXIF orientation is honoured, so sideways-stored phone photos are
   corrected on read (like PIL's `exif_transpose`).
-- Not yet ported: alpha matting, the SAM and cloth-segmentation models, and
-  custom-model paths.
+- `alpha_matting = TRUE` refines edges with closed-form matting (a port of
+  `pymatting`); the alpha matte matches Python to ≈0.9999 correlation. It's
+  slower and needs the `Matrix` package.
+- Not yet ported: the SAM and cloth-segmentation models, and custom-model paths.
 
 ## License
 

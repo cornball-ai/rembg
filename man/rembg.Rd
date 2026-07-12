@@ -4,8 +4,10 @@
 \title{Remove the background from an image}
 \usage{
 rembg(input, model = "u2net", session = NULL, only_mask = FALSE,
-      post_process_mask = FALSE, bgcolor = NULL, out = NULL,
-      output = c("array", "raw"), ...)
+      post_process_mask = FALSE, alpha_matting = FALSE,
+      alpha_matting_foreground_threshold = 240,
+      alpha_matting_background_threshold = 10, alpha_matting_erode_size = 10,
+      bgcolor = NULL, out = NULL, output = c("array", "raw"), ...)
 }
 \arguments{
 \item{input}{The image to process: a file path (PNG or JPEG), a raw vector of
@@ -23,6 +25,20 @@ calls.}
 
 \item{post_process_mask}{If \code{TRUE}, clean the mask with a morphological
 opening + gaussian blur + threshold before compositing.}
+
+\item{alpha_matting}{If \code{TRUE}, refine the cutout edges with closed-form
+alpha matting (soft hair/fur edges). Slower, and requires the \pkg{Matrix}
+package. Falls back to the plain cutout if matting fails.}
+
+\item{alpha_matting_foreground_threshold}{Mask values (0-255 domain) above
+this are treated as definite foreground in the matting trimap. Default 240.}
+
+\item{alpha_matting_background_threshold}{Mask values (0-255 domain) below
+this are treated as definite background in the matting trimap. Default 10.}
+
+\item{alpha_matting_erode_size}{Pixels by which the trimap foreground and
+background regions are eroded, leaving an unknown band for matting to solve.
+Default 10.}
 
 \item{bgcolor}{Optional background colour to composite the cutout onto, as a
 length-3 (RGB) or length-4 (RGBA) numeric vector in \code{[0,1]} or 0-255.}
