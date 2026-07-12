@@ -11,10 +11,12 @@
 
 .base_url <- "https://github.com/danielgatis/rembg/releases/download/v0.0.0/"
 
-# One registry entry.
-.model <- function(size, mean, std, sigmoid, file, checksum) {
+# One registry entry. `kind` selects the predict path: "salient" (the generic
+# single-mask models) or "cloth" (u2net_cloth_seg's multi-class garment masks).
+.model <- function(size, mean, std, sigmoid, file, checksum, kind = "salient") {
     list(size = as.integer(size), mean = mean, std = std,
-         sigmoid = isTRUE(sigmoid), file = file, checksum = checksum)
+         sigmoid = isTRUE(sigmoid), file = file, checksum = checksum,
+         kind = kind)
 }
 
 # name -> spec. `checksum` is "md5:..." or "sha256:...".
@@ -46,7 +48,10 @@
                 "birefnet-massive" = .model(1024, .imagenet_mean, .imagenet_std, TRUE,
         "BiRefNet-massive-TR_DIS5K_TR_TEs-epoch_420.onnx", "md5:33e726a2136a3d59eb0fdf613e31e3e9"),
                 "bria-rmbg" = .model(1024, .imagenet_mean, .imagenet_std, FALSE,
-                                     "bria-rmbg-2.0.onnx", "sha256:5b486f08200f513f460da46dd701db5fbb47d79b4be4b708a19444bcd4e79958")
+                                     "bria-rmbg-2.0.onnx", "sha256:5b486f08200f513f460da46dd701db5fbb47d79b4be4b708a19444bcd4e79958"),
+                "u2net_cloth_seg" = .model(768, .imagenet_mean, .imagenet_std, FALSE,
+        "u2net_cloth_seg.onnx", "md5:2434d1f3cb744e0e49386c906e5a08bb",
+        kind = "cloth")
 )
 
 #' Available background-removal models
