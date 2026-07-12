@@ -32,6 +32,17 @@ new_session <- function(model = "u2net",
              "once to install it, then retry.", call. = FALSE)
     }
 
+    # SAM loads two models (encoder + decoder) instead of one.
+    if (identical(spec$kind, "sam")) {
+        paths <- .ensure_sam_models(spec)
+        return(structure(
+                         list(model = model, spec = spec, backend = backend,
+                              encoder = onnxr::onnx_model(paths[[1]], backend = backend),
+                              decoder = onnxr::onnx_model(paths[[2]], backend = backend)),
+                         class = "rembg_session"
+            ))
+    }
+
     path <- .ensure_model(model)
     onnx <- onnxr::onnx_model(path, backend = backend)
 
@@ -46,7 +57,11 @@ new_session <- function(model = "u2net",
 print.rembg_session <- function(x, ...) {
     cat("<rembg_session>\n")
     cat("  model:   ", x$model, "\n", sep = "")
-    cat("  input:   ", x$spec$size, "x", x$spec$size, "\n", sep = "")
+    if (identical(x$spec$kind, "sam")) {
+        cat("  models:  encoder + decoder (click-to-segment)\n", sep = "")
+    } else {
+        cat("  input:   ", x$spec$size, "x", x$spec$size, "\n", sep = "")
+    }
     cat("  backend: ", x$backend, "\n", sep = "")
     invisible(x)
 }

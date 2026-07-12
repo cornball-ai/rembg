@@ -56,7 +56,7 @@ rembg_models()
 `u2net`, `u2netp`, `u2net_human_seg`, `silueta`, `isnet-general-use`,
 `isnet-anime`, `birefnet-general`, `birefnet-general-lite`, `birefnet-portrait`,
 `birefnet-dis`, `birefnet-hrsod`, `birefnet-cod`, `birefnet-massive`,
-`bria-rmbg`, `u2net_cloth_seg`.
+`bria-rmbg`, `u2net_cloth_seg`, `sam`.
 
 `u2net_cloth_seg` segments clothing rather than the salient subject, returning one
 mask per garment class. Pick a `cloth_category` (`"upper"`, `"lower"`, `"full"`)
@@ -65,6 +65,15 @@ or omit it for all three stacked vertically:
 ```r
 sess <- new_session("u2net_cloth_seg")
 top  <- rembg("person.jpg", session = sess, cloth_category = "upper")
+```
+
+`sam` (Segment Anything) is click-to-segment: give it point prompt(s) and it
+segments the object you point at. Points are `(x, y)` pixel coordinates; labels
+are `1` (foreground) or `0` (background), defaulting to foreground:
+
+```r
+sess <- new_session("sam")
+obj  <- rembg("scene.jpg", session = sess, points = c(400, 165))
 ```
 
 Models download on first use into `~/.u2net` (or `U2NET_HOME`), the same cache
@@ -82,7 +91,7 @@ the Python `rembg` uses, so the two share downloads.
 - `alpha_matting = TRUE` refines edges with closed-form matting (a port of
   `pymatting`); the alpha matte matches Python to ≈0.9999 correlation. It's
   slower and needs the `Matrix` package.
-- Not yet ported: the SAM (click-to-segment) model and custom-model paths.
+- Not yet ported: custom-model paths (pointing at your own local `.onnx`).
 
 ## License
 
