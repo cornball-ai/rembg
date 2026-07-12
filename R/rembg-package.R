@@ -8,10 +8,12 @@
 #' On first use the ONNX Runtime shared library must be present. If \pkg{onnxr}
 #' cannot find it, run \code{onnxr::onnx_install()} once.
 #'
+#' @name rembg-package
+#' @aliases rembg-package
 #' @keywords internal
 #' @importFrom onnxr onnx_model onnx_run onnx_is_installed
 #' @importFrom jpeg readJPEG writeJPEG
 #' @importFrom png readPNG writePNG
 #' @importFrom utils download.file
 #' @importFrom tools md5sum
-"_PACKAGE"
+NULL

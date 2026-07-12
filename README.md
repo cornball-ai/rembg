@@ -65,6 +65,8 @@ the Python `rembg` uses, so the two share downloads.
 - Fidelity: masks match Python `rembg` closely (≈99.9% pixel agreement) but are
   not bit-identical. We resize with bilinear where PIL uses LANCZOS; the
   difference shows only at soft edges (hair, fur).
+- JPEG EXIF orientation is honoured, so sideways-stored phone photos are
+  corrected on read (like PIL's `exif_transpose`).
 - Not yet ported: alpha matting, the SAM and cloth-segmentation models, and
   custom-model paths.
 

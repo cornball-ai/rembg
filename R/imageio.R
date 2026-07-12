@@ -35,7 +35,8 @@
     a
 }
 
-# Read any supported input into an [h,w,3] array in [0,1].
+# Read any supported input into an [h,w,3] array in [0,1]. JPEG EXIF orientation
+# is corrected on read (upstream calls PIL exif_transpose before processing).
 #   input: file path (character), raw vector of encoded bytes, or a numeric
 #          [h,w] / [h,w,c] array already in [0,1] (or 0-255).
 .read_image <- function(input) {
@@ -43,25 +44,21 @@
         if (length(input) != 1L || !file.exists(input)) {
             stop("Image file not found: ", input, call. = FALSE)
         }
-        bytes <- readBin(input, "raw", n = 8L)
-        fmt <- .image_format(bytes)
-        a <- switch(fmt,
-                    jpeg = jpeg::readJPEG(input),
-                    png = png::readPNG(input),
-                    stop("Unsupported image format (only PNG and JPEG are supported): ", input,
-                         call. = FALSE)
-        )
-        return(.as_rgb(a))
+        input <- readBin(input, "raw", n = file.size(input))
     }
     if (is.raw(input)) {
         fmt <- .image_format(input)
         a <- switch(fmt,
                     jpeg = jpeg::readJPEG(input),
                     png = png::readPNG(input),
-                    stop("Unsupported image format in raw input (only PNG and JPEG).",
+                    stop("Unsupported image format (only PNG and JPEG are supported).",
                          call. = FALSE)
         )
-        return(.as_rgb(a))
+        a <- .as_rgb(a)
+        if (identical(fmt, "jpeg")) {
+            a <- .apply_orientation(a, .exif_orientation(input))
+        }
+        return(a)
     }
     if (is.array(input) || is.matrix(input)) {
         a <- input
