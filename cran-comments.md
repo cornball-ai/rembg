@@ -1,3 +1,12 @@
+## Resubmission
+
+This is a resubmission of version 0.1.0, replacing my earlier submission of the
+same version. Before review I found and corrected an issue: model downloads now
+ask for the user's confirmation of the cache location (an interactive prompt on
+first use; non-interactive use opts in via `options(rembg.download = TRUE)` or the
+`REMBG_DOWNLOAD` environment variable). No models are downloaded during package
+load, examples, or tests.
+
 ## R CMD check results
 
 0 errors | 0 warnings | 1 note
