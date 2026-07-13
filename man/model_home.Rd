@@ -9,9 +9,10 @@ model_home()
 A file path (character scalar). The directory is not created.
 }
 \description{
-Mirrors the Python \emph{rembg} cache resolution so the two share models:
-the \env{U2NET_HOME} environment variable if set, otherwise
-\code{<XDG_DATA_HOME>/.u2net}, otherwise \code{~/.u2net}.
+Models are cached in \code{tools::R_user_dir("rembg", "cache")}, the standard
+per-package cache location. Set the \env{U2NET_HOME} environment variable to
+override it, for example to \code{~/.u2net} to share the cache with the Python
+\emph{rembg} package.
 }
 \examples{
 model_home()
