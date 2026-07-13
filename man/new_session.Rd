@@ -41,7 +41,8 @@ and passing it to [rembg()] avoids re-loading the model each call.
 }
 \examples{
 \donttest{
-if (onnxr::onnx_is_installed()) {
+# interactive() guard: new_session() downloads the model on first use
+if (interactive() && onnxr::onnx_is_installed()) {
   sess <- new_session("u2netp")
   sess
   # bring your own model:

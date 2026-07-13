@@ -49,7 +49,8 @@
 #' @seealso [new_session()], [rembg_models()]
 #' @examples
 #' \donttest{
-#' if (onnxr::onnx_is_installed()) {
+#' # interactive() guard: rembg() downloads the model on first use
+#' if (interactive() && onnxr::onnx_is_installed()) {
 #'   cutout <- rembg(system.file("extdata", "example.jpg", package = "rembg"))
 #'   dim(cutout)
 #' }

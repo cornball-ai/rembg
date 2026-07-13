@@ -87,8 +87,9 @@ sess <- new_session(model_path = "my.onnx", size = 1024,
                     mean = c(0.5, 0.5, 0.5), std = c(1, 1, 1))
 ```
 
-Models download on first use into `~/.u2net` (or `U2NET_HOME`), the same cache
-the Python `rembg` uses, so the two share downloads.
+Models download on first use into a per-user cache
+(`tools::R_user_dir("rembg", "cache")`). Set `U2NET_HOME` to override it — e.g. to
+`~/.u2net` to share the Python `rembg` cache.
 
 ## Notes
 
