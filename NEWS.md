@@ -1,3 +1,9 @@
+# rembg 0.1.1
+
+* Ask for confirmation before downloading models into the cache, per CRAN policy:
+  an interactive prompt confirms the location on first use, and non-interactive
+  use opts in with `options(rembg.download = TRUE)` or `REMBG_DOWNLOAD=1`.
+
 # rembg 0.1.0
 
 * First release. An R port of the Python *rembg* background-removal package,

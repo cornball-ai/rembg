@@ -1,7 +1,7 @@
 Package: rembg
 Type: Package
 Title: Remove Image Backgrounds with Pre-Trained Segmentation Models
-Version: 0.1.0
+Version: 0.1.1
 Date: 2026-07-13
 Authors@R: c(
     person("Troy", "Hernandez", email = "troy@cornball.ai",
