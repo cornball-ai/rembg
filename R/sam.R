@@ -56,11 +56,14 @@
 # length-2 list of paths.
 .ensure_sam_models <- function(spec, quiet = FALSE) {
     home <- model_home()
-    if (!dir.exists(home)) {
-        dir.create(home, recursive = TRUE, showWarnings = FALSE)
-    }
     files <- paste0(spec$file, c(".encoder.onnx", ".decoder.onnx"))
     paths <- file.path(home, files)
+    if (!all(file.exists(paths))) {
+        .download_consent(home, "the SAM encoder + decoder (~350 MB)")
+        if (!dir.exists(home)) {
+            dir.create(home, recursive = TRUE, showWarnings = FALSE)
+        }
+    }
     for (i in 1:2) {
         if (!file.exists(paths[i])) {
             if (!quiet) {
