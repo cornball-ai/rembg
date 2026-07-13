@@ -53,7 +53,16 @@
         "u2net_cloth_seg.onnx", "md5:2434d1f3cb744e0e49386c906e5a08bb",
         kind = "cloth"),
                 "sam" = .model(1024, .imagenet_mean, .imagenet_std, FALSE,
-                               "sam_vit_b_01ec64", "none", kind = "sam")
+                               "sam_vit_b_01ec64", "none", kind = "sam"),
+                # Bring-your-own-model presets: run a local .onnx through a fixed
+                # preprocessing profile (supply model_path to new_session()).
+                # dis_custom and ben_custom share one profile; u2net_custom the other.
+                "u2net_custom" = .model(320, .imagenet_mean, .imagenet_std, FALSE,
+                                        "", "none", kind = "custom"),
+                "dis_custom" = .model(1024, c(0.5, 0.5, 0.5), c(1, 1, 1), FALSE,
+                                      "", "none", kind = "custom"),
+                "ben_custom" = .model(1024, c(0.5, 0.5, 0.5), c(1, 1, 1), FALSE,
+                                      "", "none", kind = "custom")
 )
 
 #' Available background-removal models

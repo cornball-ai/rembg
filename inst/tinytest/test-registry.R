@@ -1,10 +1,10 @@
 library(rembg)
 
 # registry completeness
-expect_equal(length(rembg_models()), 16L)
+expect_equal(length(rembg_models()), 19L)
 expect_true(all(c("u2net", "u2netp", "silueta", "isnet-general-use",
-                  "birefnet-general", "bria-rmbg", "u2net_cloth_seg",
-                  "sam") %in% rembg_models()))
+                  "birefnet-general", "bria-rmbg", "u2net_cloth_seg", "sam",
+                  "u2net_custom", "dis_custom", "ben_custom") %in% rembg_models()))
 
 # spec lookup and shape
 expect_error(rembg:::.model_spec("does-not-exist"))

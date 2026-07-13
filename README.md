@@ -76,6 +76,17 @@ sess <- new_session("sam")
 obj  <- rembg("scene.jpg", session = sess, points = c(400, 165))
 ```
 
+Bring your own model: the `u2net_custom` / `dis_custom` / `ben_custom` presets run
+a local `.onnx` through a fixed preprocessing profile, or pass `size`/`mean`/`std`
+directly:
+
+```r
+sess <- new_session("u2net_custom", model_path = "~/.u2net/my_model.onnx")
+# or fully explicit:
+sess <- new_session(model_path = "my.onnx", size = 1024,
+                    mean = c(0.5, 0.5, 0.5), std = c(1, 1, 1))
+```
+
 Models download on first use into `~/.u2net` (or `U2NET_HOME`), the same cache
 the Python `rembg` uses, so the two share downloads.
 
@@ -91,7 +102,7 @@ the Python `rembg` uses, so the two share downloads.
 - `alpha_matting = TRUE` refines edges with closed-form matting (a port of
   `pymatting`); the alpha matte matches Python to ≈0.9999 correlation. It's
   slower and needs the `Matrix` package.
-- Not yet ported: custom-model paths (pointing at your own local `.onnx`).
+- This is a complete port of upstream rembg's models and features.
 
 ## License
 
