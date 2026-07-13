@@ -4,7 +4,7 @@ Title: Remove Image Backgrounds with Pre-Trained Segmentation Models
 Version: 0.1.0
 Date: 2026-07-13
 Authors@R: c(
-    person("Troy", "Hernandez", email = "troy.hernandez@pm.me",
+    person("Troy", "Hernandez", email = "troy@cornball.ai",
            role = c("aut", "cre"),
            comment = c(ORCID = "0009-0005-4248-604X")),
     person("cornball.ai", role = "cph"),
