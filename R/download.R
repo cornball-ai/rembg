@@ -47,18 +47,48 @@ model_home <- function() {
     identical(tolower(got), want)
 }
 
+# Ask before writing models into the persistent cache, per CRAN policy. Consent
+# is implied once the cache directory exists (acknowledged on first use), or can
+# be pre-granted with options(rembg.download = TRUE) or the REMBG_DOWNLOAD
+# environment variable (for non-interactive/scripted use).
+.download_consent <- function(home, what) {
+    if (dir.exists(home)) {
+        return(invisible(TRUE))
+    }
+    if (isTRUE(getOption("rembg.download")) ||
+        nzchar(Sys.getenv("REMBG_DOWNLOAD", ""))) {
+        return(invisible(TRUE))
+    }
+    prompt <- sprintf(paste0(
+                             "rembg needs to download %s and will cache models in:\n  %s\n",
+                             "(Set the U2NET_HOME environment variable to change the location.)"),
+                      what, home)
+    if (!interactive()) {
+        stop(prompt,
+             "\n\nThis is a non-interactive session. Allow downloads with ",
+             "options(rembg.download = TRUE) or REMBG_DOWNLOAD=1.",
+             call. = FALSE)
+    }
+    if (!isTRUE(utils::askYesNo(paste0(prompt, "\nProceed?")))) {
+        stop("Model download declined.", call. = FALSE)
+    }
+    invisible(TRUE)
+}
+
 # Ensure the model file for `model` exists in the cache, downloading if needed.
 # Returns the absolute path to the .onnx file.
 .ensure_model <- function(model, quiet = FALSE) {
     spec <- .model_spec(model)
     home <- model_home()
-    if (!dir.exists(home)) {
-        dir.create(home, recursive = TRUE, showWarnings = FALSE)
-    }
     dest <- file.path(home, paste0(model, ".onnx"))
 
     if (file.exists(dest) && .verify_checksum(dest, spec$checksum)) {
         return(dest)
+    }
+
+    .download_consent(home, sprintf("model '%s'", model))
+    if (!dir.exists(home)) {
+        dir.create(home, recursive = TRUE, showWarnings = FALSE)
     }
 
     url <- paste0(.base_url, spec$file)

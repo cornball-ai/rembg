@@ -12,10 +12,11 @@
 ## Download / filesystem policy
 
 * No downloads or file writes occur during package load, examples, or tests.
-* Segmentation models are downloaded from the package's GitHub releases only on
-  an explicit user call to `new_session()` / `rembg()`, and cached in
-  `tools::R_user_dir("rembg", "cache")`. The `U2NET_HOME` environment variable
-  can override the cache location.
+* Segmentation models are downloaded from the package's GitHub releases only
+  after the user confirms the cache location: `utils::askYesNo()` on first use in
+  an interactive session, or an explicit opt-in via `options(rembg.download =
+  TRUE)` / `REMBG_DOWNLOAD=1` in non-interactive use. Models are cached in
+  `tools::R_user_dir("rembg", "cache")`, overridable via `U2NET_HOME`.
 * Examples that would trigger a download are wrapped in `\donttest{}` and further
   guarded by `interactive()`, so they never run during `R CMD check --as-cran`
   (which implies `--run-donttest`).
